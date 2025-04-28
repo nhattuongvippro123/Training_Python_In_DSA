@@ -20,8 +20,8 @@
 # from enum import CONTINUOUS
 # from operator import truediv
 # from random import choices
-from collections.abc import Hashable
-from multiprocessing.reduction import duplicate
+# from collections.abc import Hashable
+# from multiprocessing.reduction import duplicate
 
 # for i in range(1,6):
 #     print(i)
@@ -892,7 +892,7 @@ from multiprocessing.reduction import duplicate
 #
 # print(count_pairs([1, 2, 3, 4], 5))  # Output: 2
 
-# 2 pointer  mang da sap xep
+# 2 pointer  mang da sap xep +  hashmap với mảng chưa sắp xếp
 
 class Solution:
     def two_sum_sorted(self, numbers, target):
@@ -916,6 +916,32 @@ class Solution:
             if x in hashmap:
                 return [hashmap[x] + 1, i + 1]
             hashmap[num] = i
+
+
 Sol = Solution()
 print(Sol.two_sum_sorted([2, 7, 11, 15], 9))
 print(Sol.two_sum_unsorted([2, 7, 11, 15], 9))
+
+# Bài 1: Two Sum Less Than K
+# Cho một mảng nums và một số k, tìm tổng lớn nhất của 2 số trong nums mà nhỏ hơn k.
+# Nếu không có cặp số nào thoả mãn, trả về -1.
+
+# Input: nums = [34,23,1,24,75,33,54,8], k = 60
+# Output: 58
+# Giải thích: 34 + 24 = 58 là tổng lớn nhất < 60
+
+class Solution:
+    def max_total_less_than_k(self, nums, k):
+        hashmap = {}  # HashMap lưu các số đã gặp
+        max_sum = -1  # Biến lưu tổng lớn nhất tìm được
+
+        for num in nums:  # Duyệt từng số trong danh sách
+            for key in hashmap:  # Duyệt qua các số đã lưu trong HashMap
+                total = num + key  # Tính tổng của hai số
+                if total < k:  # Kiểm tra nếu tổng nhỏ hơn `k`
+                    max_sum = max(max_sum, total)  # Cập nhật tổng lớn nhất
+            hashmap[num] = True  # Lưu số hiện tại vào HashMap
+        return max_sum  # Trả về tổng lớn nhất tìm được
+
+Sol = Solution()
+print(Sol.max_total_less_than_k([34, 23, 1, 24, 75, 33, 54, 8], 60))  # Output: 58
