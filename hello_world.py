@@ -894,33 +894,33 @@
 
 # 2 pointer  mang da sap xep +  hashmap với mảng chưa sắp xếp
 
-class Solution:
-    def two_sum_sorted(self, numbers, target):
-        left = 0
-        right = len(numbers)-1
-
-        while left < right:
-            total = numbers[left] + numbers[right]
-
-            if total == target:
-                return [left + 1, right + 1]
-            elif total < target:
-                left += 1
-            else:
-                right -=1
-
-    def two_sum_unsorted(self, numbers, target):
-        hashmap ={}
-        for i, num in enumerate(numbers):
-            x = target - num
-            if x in hashmap:
-                return [hashmap[x] + 1, i + 1]
-            hashmap[num] = i
-
-
-Sol = Solution()
-print(Sol.two_sum_sorted([2, 7, 11, 15], 9))
-print(Sol.two_sum_unsorted([2, 7, 11, 15], 9))
+# class Solution:
+#     def two_sum_sorted(self, numbers, target):
+#         left = 0
+#         right = len(numbers)-1
+#
+#         while left < right:
+#             total = numbers[left] + numbers[right]
+#
+#             if total == target:
+#                 return [left + 1, right + 1]
+#             elif total < target:
+#                 left += 1
+#             else:
+#                 right -=1
+#
+#     def two_sum_unsorted(self, numbers, target):
+#         hashmap ={}
+#         for i, num in enumerate(numbers):
+#             x = target - num
+#             if x in hashmap:
+#                 return [hashmap[x] + 1, i + 1]
+#             hashmap[num] = i
+#
+#
+# Sol = Solution()
+# print(Sol.two_sum_sorted([2, 7, 11, 15], 9))
+# print(Sol.two_sum_unsorted([2, 7, 11, 15], 9))
 
 # Bài 1: Two Sum Less Than K
 # Cho một mảng nums và một số k, tìm tổng lớn nhất của 2 số trong nums mà nhỏ hơn k.
@@ -930,18 +930,50 @@ print(Sol.two_sum_unsorted([2, 7, 11, 15], 9))
 # Output: 58
 # Giải thích: 34 + 24 = 58 là tổng lớn nhất < 60
 
-class Solution:
+import time
+class Solution1:
     def max_total_less_than_k(self, nums, k):
-        hashmap = {}  # HashMap lưu các số đã gặp
-        max_sum = -1  # Biến lưu tổng lớn nhất tìm được
+        hash_map_key={}
+        max_sum = -1
 
-        for num in nums:  # Duyệt từng số trong danh sách
-            for key in hashmap:  # Duyệt qua các số đã lưu trong HashMap
-                total = num + key  # Tính tổng của hai số
-                if total < k:  # Kiểm tra nếu tổng nhỏ hơn `k`
-                    max_sum = max(max_sum, total)  # Cập nhật tổng lớn nhất
-            hashmap[num] = True  # Lưu số hiện tại vào HashMap
-        return max_sum  # Trả về tổng lớn nhất tìm được
+        for num in nums:
+            for key in hash_map_key:
+                total = num + key
+                if total < k:
+                    max_sum = max(max_sum, total)
+            hash_map_key[num] = True
+        return max_sum
 
-Sol = Solution()
-print(Sol.max_total_less_than_k([34, 23, 1, 24, 75, 33, 54, 8], 60))  # Output: 58
+    # sap xep xong roi 2 point
+    def twopoint_solution(self, nums, k):
+        nums.sort()
+        left  = 0
+        right = len(nums)-1
+        max_ban_dau = -1
+        while left < right:
+            total = nums[left] + nums[right]
+            if total < k:
+                 max_ban_dau = max(max_ban_dau,total)
+                 left += 1
+            else:
+                right -=1
+        return max_ban_dau
+
+import random
+nums = random.sample(range(1, 100000), 10000)
+k = 10000
+
+Sol1 = Solution1()
+
+start = time.time()
+result_hashmap = Sol1.max_total_less_than_k(nums, k)
+end = time.time()
+print(f"HashMap result: {result_hashmap}, Time: {end - start:.5f} seconds")
+
+start = time.time()
+result_twopoint = Sol1.twopoint_solution(nums, k)
+end = time.time()
+print(f"Two Pointers result: {result_twopoint}, Time: {end - start:.5f} seconds")
+
+
+
