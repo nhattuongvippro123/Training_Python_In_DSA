@@ -975,5 +975,5 @@ result_twopoint = Sol1.twopoint_solution(nums, k)
 end = time.time()
 print(f"Two Pointers result: {result_twopoint}, Time: {end - start:.5f} seconds")
 print("hello1")
-
+print("hello2")
 
