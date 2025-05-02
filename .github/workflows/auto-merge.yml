@@ -1,0 +1,35 @@
+name: Auto Merge Feature to Develop
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Auto-create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: develop         
+          branch: ${{ github.ref_name }} 
+          title: 'Auto PR from ${{ github.ref_name }} to develop'
+          body: 'Auto create PR from feature in develop'
+          commit-message: 'auto merge commit'
+          draft: false
+          delete-branch: false
+
+      - name: Auto-approve
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-merge
+        uses: pascalgn/automerge-action@v0.14.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
